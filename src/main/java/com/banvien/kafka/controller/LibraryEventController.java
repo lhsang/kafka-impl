@@ -1,7 +1,7 @@
 package com.banvien.kafka.controller;
 
-import com.banvien.kafka.dto.LibraryEvent;
-import com.banvien.kafka.external.producer.LibraryEventProducer;
+import com.banvien.kafka.dto.Library;
+import com.banvien.kafka.service.LibraryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,11 @@ import java.util.concurrent.TimeoutException;
 @RequestMapping("/libraryevent")
 public class LibraryEventController {
     @Autowired
-    LibraryEventProducer libraryEventProducer;
+    LibraryService libraryService;
 
-    @PostMapping("")
-    public ResponseEntity<LibraryEvent> createLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException {
-        libraryEventProducer.sendEventSynchronous(libraryEvent.getLibraryEventId(), libraryEvent);
-        return ResponseEntity.ok(libraryEvent);
+    @PostMapping
+    public ResponseEntity<Library> saveLibrary(@RequestBody Library library) throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException {
+        libraryService.save(library);
+        return ResponseEntity.ok(library);
     }
 }

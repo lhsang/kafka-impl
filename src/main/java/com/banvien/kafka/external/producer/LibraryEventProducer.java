@@ -1,6 +1,6 @@
 package com.banvien.kafka.external.producer;
 
-import com.banvien.kafka.dto.LibraryEvent;
+import com.banvien.kafka.dto.Library;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * @author sang.le-hoang on Jan 12, 2021
  */
 @Component
-public class LibraryEventProducer extends Producer<LibraryEvent>{
+public class LibraryEventProducer extends Producer<Library>{
     Logger logger = LoggerFactory.getLogger(LibraryEventProducer.class);
     final private String TOPIC = "library-events";
 
@@ -26,10 +26,9 @@ public class LibraryEventProducer extends Producer<LibraryEvent>{
         super.setTOPIC(TOPIC);
     }
 
-    // SEND WITH CONTEXT TOPIC
     @Override
-    public void sendEventSynchronous(Integer key, LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
-        String value = objectMapper.writeValueAsString(libraryEvent);
+    public void sendEventSynchronous(Integer key, Library library) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+        String value = objectMapper.writeValueAsString(library);
 
         ProducerRecord<Integer, String> producerRecord = this.buildProducerRecord(key, value);
 

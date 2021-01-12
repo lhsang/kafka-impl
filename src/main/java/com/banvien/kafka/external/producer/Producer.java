@@ -32,19 +32,8 @@ public abstract class Producer<T> {
     }
 
     public void sendEventAsynchronous(Integer key, T value) throws RuntimeException {
-//        String value = objectMapper.writeValueAsString(libraryEvent);
-//
-//        ProducerRecord<Integer, String> producerRecord = this.buildProducerRecord(this.TOPIC, key, value);
-//
-//        ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
-//
-//        // wait for response
-//        SendResult<Integer, String> sendResult = sendResultListenableFuture.get(3, TimeUnit.SECONDS);
-//
-//        // you can add callback func by
-//        // sendResultListenableFuture.addCallback();
-//
-//        logger.info("Message Sent to Topic #{} SuccessFully for the key : {} and the value is {} , partition is {}", this.TOPIC, key, value, sendResult.getRecordMetadata().partition());
+        // you can add callback func by
+        // sendResultListenableFuture.addCallback();
 
         throw new RuntimeException("Method need override");
     }
