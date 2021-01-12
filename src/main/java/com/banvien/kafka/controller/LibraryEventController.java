@@ -24,7 +24,7 @@ public class LibraryEventController {
 
     @PostMapping("")
     public ResponseEntity<LibraryEvent> createLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException {
-        libraryEventProducer.sendEvent(libraryEvent.getLibraryEventId(), libraryEvent);
+        libraryEventProducer.sendEventSynchronous(libraryEvent.getLibraryEventId(), libraryEvent);
         return ResponseEntity.ok(libraryEvent);
     }
 }

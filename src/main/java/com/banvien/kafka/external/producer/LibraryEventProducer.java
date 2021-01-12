@@ -2,6 +2,7 @@ package com.banvien.kafka.external.producer;
 
 import com.banvien.kafka.dto.LibraryEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.support.SendResult;
@@ -18,11 +19,21 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class LibraryEventProducer extends Producer<LibraryEvent>{
     Logger logger = LoggerFactory.getLogger(LibraryEventProducer.class);
+    final private String TOPIC = "library-events";
 
+    public LibraryEventProducer() {
+        super();
+        super.setTOPIC(TOPIC);
+    }
+
+    // SEND WITH CONTEXT TOPIC
     @Override
-    public void sendEvent(Integer key, LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+    public void sendEventSynchronous(Integer key, LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
         String value = objectMapper.writeValueAsString(libraryEvent);
-        ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.sendDefault(key, value);
+
+        ProducerRecord<Integer, String> producerRecord = this.buildProducerRecord(key, value);
+
+        ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
 
         // wait for response
         SendResult<Integer, String> sendResult = sendResultListenableFuture.get(3, TimeUnit.SECONDS);
@@ -30,9 +41,7 @@ public class LibraryEventProducer extends Producer<LibraryEvent>{
         // you can add callback func by
         // sendResultListenableFuture.addCallback();
 
-        logger.info("Message Sent SuccessFully for the key : {} and the value is {} , partition is {}", key, value, sendResult.getRecordMetadata().partition());
+        logger.info("Message Sent to Topic #{} SuccessFully for the key : {} and the value is {} , partition is {}", this.TOPIC, key, value, sendResult.getRecordMetadata().partition());
     }
-
-
 
 }
