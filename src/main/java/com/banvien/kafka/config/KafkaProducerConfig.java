@@ -9,7 +9,7 @@ import org.springframework.kafka.config.TopicBuilder;
  * @author sang.le-hoang on Jan 12, 2021
  */
 @Configuration
-public class KafkaProducerAutoConfig {
+public class KafkaProducerConfig {
     @Bean
     public NewTopic libraryEvents(){
         return TopicBuilder.name("library-events")

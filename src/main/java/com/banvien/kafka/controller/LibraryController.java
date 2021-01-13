@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
  */
 @RestController
 @RequestMapping("/libraryevent")
-public class LibraryEventController {
+public class LibraryController {
     @Autowired
     LibraryService libraryService;
 

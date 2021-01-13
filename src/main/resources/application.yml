@@ -1,9 +1,4 @@
 spring:
-  profiles:
-    active: local
----
-spring:
-  profiles: local
   kafka:
     template:
       default-topic: library-events

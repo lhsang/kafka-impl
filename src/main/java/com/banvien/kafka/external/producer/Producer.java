@@ -31,7 +31,7 @@ public abstract class Producer<T> {
         sendEventSynchronous(null, value);
     }
 
-    public void sendEventAsynchronous(Integer key, T value) throws RuntimeException {
+    public void sendEventAsynchronous(Integer key, T value) throws RuntimeException, JsonProcessingException {
         // you can add callback func by
         // sendResultListenableFuture.addCallback();
 

@@ -4,15 +4,15 @@ package com.banvien.kafka.dto;
  * @author sang.le-hoang on Jan 12, 2021
  */
 public class Library {
-    private Integer libraryEventId;
+    private Integer libraryId;
     private BookDTO book;
 
-    public Integer getLibraryEventId() {
-        return libraryEventId;
+    public Integer getLibraryId() {
+        return libraryId;
     }
 
-    public void setLibraryEventId(Integer libraryEventId) {
-        this.libraryEventId = libraryEventId;
+    public void setLibraryId(Integer libraryId) {
+        this.libraryId = libraryId;
     }
 
     public BookDTO getBook() {

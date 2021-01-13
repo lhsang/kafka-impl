@@ -1,7 +1,7 @@
 package com.banvien.kafka.service.impl;
 
 import com.banvien.kafka.dto.Library;
-import com.banvien.kafka.external.producer.LibraryEventProducer;
+import com.banvien.kafka.external.producer.LibraryProducer;
 import com.banvien.kafka.service.LibraryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,13 @@ import java.util.concurrent.TimeoutException;
 @Service
 public class LibaryServiceImpl implements LibraryService {
     @Autowired
-    LibraryEventProducer libraryEventProducer;
+    LibraryProducer libraryProducer;
 
     @Override
     public void save(Library libraryEvent) throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException {
-        libraryEventProducer.sendEventSynchronous(libraryEvent.getLibraryEventId(), libraryEvent);
+        // handle biz logic
+
+        // call to producer to send
+        libraryProducer.sendEventAsynchronous(libraryEvent.getLibraryId(), libraryEvent);
     }
 }
