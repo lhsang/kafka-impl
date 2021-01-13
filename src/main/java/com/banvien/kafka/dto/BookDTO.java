@@ -32,4 +32,13 @@ public class BookDTO {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "BookDTO{" +
+                "bookId=" + bookId +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }

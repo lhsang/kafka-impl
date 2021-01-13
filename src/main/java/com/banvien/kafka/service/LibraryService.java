@@ -11,4 +11,6 @@ import java.util.concurrent.TimeoutException;
  */
 public interface LibraryService {
    void save(Library library) throws InterruptedException, ExecutionException, TimeoutException, JsonProcessingException;
+
+   void onSavedLibrary(Library library);
 }

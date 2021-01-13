@@ -4,14 +4,30 @@ package com.banvien.kafka.dto;
  * @author sang.le-hoang on Jan 12, 2021
  */
 public class Library {
-    private Integer libraryId;
+    private String libraryId;
     private BookDTO book;
 
-    public Integer getLibraryId() {
+    public Library() {
+    }
+
+    public Library(String libraryId) {
+        this.libraryId = libraryId;
+    }
+
+    public Library(BookDTO book) {
+        this.book = book;
+    }
+
+    public Library(String libraryId, BookDTO book) {
+        this.libraryId = libraryId;
+        this.book = book;
+    }
+
+    public String getLibraryId() {
         return libraryId;
     }
 
-    public void setLibraryId(Integer libraryId) {
+    public void setLibraryId(String libraryId) {
         this.libraryId = libraryId;
     }
 
@@ -21,5 +37,13 @@ public class Library {
 
     public void setBook(BookDTO book) {
         this.book = book;
+    }
+
+    @Override
+    public String toString() {
+        return "Library{" +
+                "libraryId='" + libraryId + '\'' +
+                ", book=" + book +
+                '}';
     }
 }

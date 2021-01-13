@@ -1,7 +1,6 @@
 package com.banvien.kafka.external.producer;
 
-import com.banvien.kafka.Constant.KafkaProducerConstant;
-import com.banvien.kafka.dto.Library;
+import com.banvien.kafka.constant.KafkaProducerConstant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeoutException;
  * @author sang.le-hoang on Jan 12, 2021
  */
 @Component
-public class LibraryProducer extends Producer<Library>{
+public class LibraryProducer extends Producer<String, String>{
     Logger logger = LoggerFactory.getLogger(LibraryProducer.class);
     final private String TOPIC = "library-events";
 
@@ -29,35 +28,35 @@ public class LibraryProducer extends Producer<Library>{
     }
 
     @Override
-    public void sendEventSynchronous(Integer key, Library library) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+    public void sendEventSynchronous(String key, Object library) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
         String value = objectMapper.writeValueAsString(library);
 
-        ProducerRecord<Integer, String> producerRecord = this.buildProducerRecord(key, value);
+        ProducerRecord<String, String> producerRecord = this.buildProducerRecord(key, value);
 
-        ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
+        ListenableFuture<SendResult<String, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
 
         // wait for response
-        SendResult<Integer, String> sendResult = sendResultListenableFuture.get(KafkaProducerConstant.TIME_OUT_4_RESPONSE, TimeUnit.SECONDS);
+        SendResult<String, String> sendResult = sendResultListenableFuture.get(KafkaProducerConstant.TIME_OUT_4_RESPONSE, TimeUnit.SECONDS);
 
         logger.info("Message sent to Topic #{} SuccessFully for the key: {} and the value is {} , partition is {}", this.TOPIC, key, value, sendResult.getRecordMetadata().partition());
     }
 
     @Override
-    public void sendEventAsynchronous(Integer key, Library library) throws JsonProcessingException {
+    public void sendEventAsynchronous(String key, Object library) throws JsonProcessingException {
         String value = objectMapper.writeValueAsString(library);
 
-        ProducerRecord<Integer, String> producerRecord = this.buildProducerRecord(key, value);
+        ProducerRecord<String, String> producerRecord = this.buildProducerRecord(key, value);
 
-        ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
+        ListenableFuture<SendResult<String, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
 
-        sendResultListenableFuture.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
+        sendResultListenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onFailure(Throwable ex) {
                 logger.error("Error Sending the Message and the exception is {}", ex.getMessage());
             }
 
             @Override
-            public void onSuccess(SendResult<Integer, String> result) {
+            public void onSuccess(SendResult<String, String> result) {
                 logger.info("Message sent successFully for the key: {} and the value is {} , partition is {}", key, value, result.getRecordMetadata().partition());
             }
         });
